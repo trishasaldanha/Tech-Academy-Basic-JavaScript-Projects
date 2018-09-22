@@ -25,7 +25,7 @@
 			<!-- Pizza Size -->
 			<div class="col-sm">
 				<div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/pizza.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/pizza.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your pizza size:<br>
@@ -41,7 +41,7 @@
 			<!-- Crust Type -->
 			<div class="col-sm">
 			  <div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/crust.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/crust.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your crust type:<br>
@@ -58,7 +58,7 @@
 		<!-- Sauce Type -->
 			<div class="col-sm">
 				<div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/sauces.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/sauces.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your pizza sauce:<br>
@@ -74,7 +74,7 @@
 		<!-- Cheese Options -->
 			<div class="col-sm">
 				<div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/cheese.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/cheese.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your cheese preference:<br>
@@ -89,7 +89,7 @@
 		<!-- Veggie Options -->
 		<div class="col-sm">
 				<div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/veggies.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/veggies.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your veggies:<br>
@@ -109,7 +109,7 @@
 		<!-- Meat Options -->
 		<div class="col-sm">
 				<div class="card-group" style="width: 18rem;">
-					<img class="card-img-top" src="./images/meat.jpg" alt="Card image cap">
+					<img class="card-img-top" src="./images/meat.jpg" alt="" style="height: 180px; width: 286px">
 					<div class="card-body">
 						<p class="card-text">
 							Choose your meats:<br>
@@ -132,11 +132,10 @@
 		<button type="button" class="btn btn-secondary btn-large btn-block" onClick=getReceipt() data-toggle="modal" data-target="#receiptTotal">
 		  Submit Order
 		</button>
-
-		<!-- Modal -->
 		
 	<!-- /Order Button -->
-	<div class="modal fade" id="receiptTotal" tabindex="-1" role="dialog" aria-labelledby="receiptTotal" aria-hidden="true">
+	
+<div class="modal fade" id="receiptTotal" tabindex="-1" role="dialog" aria-labelledby="receiptTotal" aria-hidden="true">
 		  <div class="modal-dialog" role="document">
 			<div class="modal-content">
 			  <div class="modal-header">
@@ -148,13 +147,19 @@
 			  <div class="modal-body">
 				<div class="container-fluid">
 					<div class="row">
-						<div class="col-md-4">
-							<h4 id="showText"></h4>
-							<h4 id="totalPrice"></h4>
-						</div>
-						<div class="col-md-4 ml-auto">
-							<h4 id="showText2"></h4>
-						</div>
+						<table id="receiptTable class="table table-bordered">
+							<tbody>
+								<tr>
+									<th scope="row"></th>
+									<td id="showText"></td>
+									<td id="showText2"></td>
+								</tr>
+								<tr>
+									<th scope="row"></th>
+									<td id="totalPrice"><td>
+								</tr>
+							</tbody>
+						</table>
 			  <div class="modal-footer">
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel Order</button>
 				<button type="button" class="btn btn-primary">Submit Order</button>
@@ -162,11 +167,12 @@
 			</div>
 		  </div>
 		</div>
+
 	<!-- JavaScript -->
 	<script>
 	function getReceipt() {
-	var text1 = "<h4>Your Order:</h4>";
-	var text2 = "<h4>Subtotal:</h4>";
+	var text1 = "";
+	var text2 = "$";
 	var runningTotal = 0;
 	//Pizza Size Total
 	var sizeTotal = 0;
@@ -186,7 +192,7 @@
 	} else if (selectedSize === "Extra Large Pizza") {
 		sizeTotal = 16;
 	}
-	text2 = text2+"$"+sizeTotal+".00<br>";
+	text2 = text2+sizeTotal+".00<br>";
 	runningTotal = sizeTotal;
 	document.getElementById("showText").innerHTML=text1;
 	document.getElementById("totalPrice").innerHTML="<h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
@@ -201,9 +207,8 @@ function getMeat(runningTotal,text1,text2) {
 	for (var j = 0; j < meatArray.length; j++) {
 		if (meatArray[j].checked) {
 			selectedMeat.push(meatArray[j].value);
-			console.log("selected meat item: ("+meatArray[j].value+")");
 			text1 = text1+meatArray[j].value+"<br>";
-		}
+		} 
 	}
 	var meatCount = selectedMeat.length;
 	if (meatCount > 1) {
@@ -211,8 +216,23 @@ function getMeat(runningTotal,text1,text2) {
 	} else {
 		meatTotal = 0;
 	}
+	if (meatCount == 1) {
+		text2=text2+"$"+meatTotal+".00<br>";
+	} else if (meatCount == 2) {
+		text2=text2+"$0.00<br>$1.00<br>"
+	} else if (meatCount == 0){
+		text2=text2;
+	}else if (meatCount == 3) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>"
+	} else if (meatCount == 4) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (meatCount == 5) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (meatCount == 6) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} 
+	
 	runningTotal = (runningTotal + meatTotal);
-	text2=text2+"$"+meatTotal+".00<br>";
 	document.getElementById("showText2").innerHTML=text2
 	document.getElementById("showText").innerHTML=text1;
 	document.getElementById("totalPrice").innerHTML = "<h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
@@ -235,7 +255,27 @@ function getVeggies(runningTotal,text1,text2) {
 	} else {
 		veggiesTotal = 0;
 	}
-	text2=text2+"$"+veggiesTotal+".00<br>";
+	
+	if (veggiesCount == 1) {
+		text2=text2+"$"+veggiesTotal+".00<br>";
+	} else if (veggiesCount == 2) {
+		text2=text2+"$0.00<br>$1.00<br>"
+	} else if (veggiesCount == 0){
+		text2=text2;
+	}else if (veggiesCount == 3) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>"
+	} else if (veggiesCount == 4) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (veggiesCount == 5) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (veggiesCount == 6) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (veggiesCount == 7) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>"
+	} else if (veggiesCount == 8) {
+		text2=text2+"$0.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>$1.00<br>1.00<br>"
+	} 
+
 	runningTotal = (runningTotal + veggiesTotal);
 	document.getElementById("showText").innerHTML=text1;
 	document.getElementById("showText2").innerHTML=text2;
@@ -265,9 +305,6 @@ function getVeggies(runningTotal,text1,text2) {
 	}
 	text2=text2+"$"+crustTotal+".00<br>";
 	runningTotal = runningTotal+crustTotal;
-	console.log(selectedCrust+" = $"+crustTotal+".00");
-	console.log("crust text1: "+text1);
-	console.log("subtotal: $"+runningTotal+".00");
 	document.getElementById("showText").innerHTML=text1;
 	document.getElementById("showText2").innerHTML=text2;
 	document.getElementById("totalPrice").innerHTML= "<h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
@@ -309,7 +346,6 @@ function getVeggies(runningTotal,text1,text2) {
 	}
 	text2=text2+"$"+cheeseTotal+".00<br>";
 	runningTotal= runningTotal+cheeseTotal;
-	console.log(selectedCheese+"= $"+cheeseTotal+".00");
 	document.getElementById("showText").innerHTML=text1;
 	document.getElementById("showText2").innerHTML=text2;
 	document.getElementById("totalPrice").innerHTML="<h3>Total: <strong>$"+runningTotal+".00"+"</strong></h3>";
